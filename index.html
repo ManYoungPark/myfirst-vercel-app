@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>질문하기</title>
+</head>
+<body>
+  <h1>질문을 입력하세요</h1>
+  <form id="questionForm">
+    <input type="text" id="questionInput" placeholder="질문을 입력하세요" required>
+    <button type="submit">보내기</button>
+  </form>
+
+  <p id="responseMessage"></p>
+
+  <script>
+    document.getElementById('questionForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const question = document.getElementById('questionInput').value;
+
+      const response = await fetch('/api/ask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ question })
+      });
+
+      const data = await response.json();
+      document.getElementById('responseMessage').innerText = data.message;
+    });
+  </script>
+</body>
+</html>
